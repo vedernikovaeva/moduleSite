@@ -1,49 +1,35 @@
 <template>
     <div>
-      <h1>Список альбомів</h1>
-      <div v-for="album in albums" :key="album.id" class="album">
-        <h2>{{ album.title }}</h2>
-        <ul>
-          <li v-for="song in album.songs" :key="song.id">{{ song.title }}</li>
-        </ul>
-      </div>
+      <h2>Albums</h2>
+      <input v-model="filterGroup" placeholder="Filter by group name" />
+      <ul>
+        <li 
+          v-for="album in filteredAlbums" 
+          :key="album.id"
+        >
+          {{ album.name }} - Group ID: {{ album.groupId }}
+        </li>
+      </ul>
     </div>
   </template>
   
   <script>
+  import { mapState } from 'vuex';
+  
   export default {
-    name: 'Albums',
     data() {
       return {
-        albums: [
-          { 
-            id: 1, 
-            title: 'The Beatles – Abbey Road (1969)', 
-            songs: [
-              { id: 1, title: '"Come Together"' },
-              { id: 2, title: '"Here Comes the Sun"' },
-            ] 
-          },
-          { 
-            id: 2, 
-            title: 'Michael Jackson – Thriller (1982)', 
-            songs: [
-              { id: 3, title: '"Thriller"' },
-              { id: 4, title: '"Billie Jean"' },
-            ] 
-          },
-        ],
+        filterGroup: '',
       };
+    },
+    computed: {
+      ...mapState(['albums']),
+      filteredAlbums() {
+        return this.albums.filter(album => 
+          album.groupId.toString().includes(this.filterGroup)
+        );
+      },
     },
   };
   </script>
-  
-  <style scoped>
-  h1 {
-    color: #2c3e50;
-  }
-  .album {
-    margin-bottom: 20px;
-  }
-  </style>
   

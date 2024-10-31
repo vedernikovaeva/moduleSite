@@ -1,41 +1,30 @@
 <template>
     <div>
-      <h1>Список пісень</h1>
-      <label for="song-select">Виберіть пісню:</label>
-      <select id="song-select" v-model="selectedSong" @change="fetchAlbumsBySong">
-        <option v-for="song in songs" :key="song.id" :value="song">{{ song.title }}</option>
-      </select>
-  
-      <div v-if="selectedSong">
-        <h2>Ви обрали: {{ selectedSong.title }}</h2>
-        <p>Перейдіть до сторінки альбомів, щоб переглянути альбоми, що містять цю пісню.</p>
-      </div>
+      <h2>Songs</h2>
+      <input v-model="songSearch" placeholder="Search for song" />
+      <ul>
+        <li v-for="album in filteredAlbums" :key="album.id">
+          {{ album.name }} - Songs: {{ album.songs.join(', ') }}
+        </li>
+      </ul>
     </div>
   </template>
   
   <script>
+  import { mapGetters } from 'vuex';
+  
   export default {
-    name: 'Songs',
     data() {
       return {
-        songs: [
-          { id: 1, title: 'Song 1' },
-          { id: 2, title: 'Song 2' },
-          { id: 3, title: 'Song 3' },
-        ],
-        selectedSong: null,
+        songSearch: '',
       };
     },
-    methods: {
-      fetchAlbumsBySong() {
+    computed: {
+      ...mapGetters(['getAlbumsContainingSong']),
+      filteredAlbums() {
+        return this.songSearch ? this.getAlbumsContainingSong(this.songSearch) : [];
       },
     },
   };
   </script>
-  
-  <style scoped>
-  h1 {
-    color: #2c3e50;
-  }
-  </style>
   

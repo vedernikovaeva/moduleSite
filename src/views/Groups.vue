@@ -1,7 +1,6 @@
 <template>
     <div>
-      <h1>Групи</h1>
-      <group-list />
+      <GroupList />
     </div>
   </template>
   
@@ -9,7 +8,7 @@
   import GroupList from '../components/GroupList.vue';
   
   export default {
-    components: { GroupList }
-  }
+    components: { GroupList },
+  };
   </script>
   
